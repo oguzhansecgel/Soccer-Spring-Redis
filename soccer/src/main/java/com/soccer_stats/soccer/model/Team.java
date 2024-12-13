@@ -27,6 +27,6 @@ public class Team {
     @JoinColumn(name = "league_id")
     private League league;
 
-    @ManyToMany(mappedBy = "teams", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "currentTeam")
     private List<Player> players;
 }

@@ -21,7 +21,7 @@ public class TeamController {
     public TeamController(TeamService teamService) {
         this.teamService = teamService;
     }
-    @GetMapping("/getByıd/team/{id}")
+    @GetMapping("/getById/team/{id}")
     public Optional<GetByIdTeamResponse> getByIdTeam(@PathVariable int id)
     {
         return teamService.getByIdTeam(id);

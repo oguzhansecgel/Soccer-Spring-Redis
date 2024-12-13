@@ -1,21 +1,20 @@
 package com.soccer_stats.soccer.model;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "player_team_history")
 @Entity
-public class PlayerTeamHistory {
+@Table(name = "player_stats")
+public class PlayerStats {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,12 +24,17 @@ public class PlayerTeamHistory {
     @JoinColumn(name = "player_id")
     private Player player;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "team_id")
-    private Team team;
+    private int seasonYearStart;
+    private int seasonYearEnd;
+    private int goals;
+    private int assists;
+    private int yellowCards;
+    private int redCards;
 
+    @Temporal(TemporalType.DATE)
     private Date startDate;
+
+    @Temporal(TemporalType.DATE)
     private Date endDate;
 
-    private boolean isNationalTeam;
 }

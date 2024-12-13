@@ -1,23 +1,15 @@
 package com.soccer_stats.soccer.model;
 
 public enum Position {
-    KALECİ,
-
-
-    SAĞ_BEK,
-    SOL_BEK,
+    KALECI,
     STOPER,
-    LIBERO,
-
-
-    DEFANSİF_ORTA_SAHA,
-    MERKEZİ_ORTA_SAHA,
-    OFANSİF_ORTA_SAHA,
-    KANAT,
-
-
-    SANTRFOR,
-    İKİNCİ_FORVET,
-    KANAT_FORVETİ,
-    DESTEK_FORVET;
+    SOL_BEK,
+    SAG_BEK,
+    ÖN_LIBERO,
+    DEFANSIF_ORTA_SAHA,
+    MERKEZ_ORTA_SAHA,
+    ON_NUMARA,
+    SOL_KANAT,
+    SAG_KANAT,
+    SANTRAFOR
 }

@@ -12,5 +12,6 @@ public class GetByIdTeamResponse {
     private int id;
     private String name;
     private int since;
+    private double squadValue;
     private String leagueName;
 }

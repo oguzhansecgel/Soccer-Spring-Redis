@@ -8,7 +8,9 @@ import com.soccer_stats.soccer.dto.response.player.GetByIdPlayerResponse;
 import com.soccer_stats.soccer.dto.response.player.UpdatePlayerResponse;
 import com.soccer_stats.soccer.mapper.PlayerMapping;
 import com.soccer_stats.soccer.model.Player;
+import com.soccer_stats.soccer.model.Team;
 import com.soccer_stats.soccer.repository.PlayerRepository;
+import com.soccer_stats.soccer.repository.TeamRepository;
 import com.soccer_stats.soccer.service.PlayerService;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +22,11 @@ public class PlayerServiceImpl implements PlayerService {
 
 
     private final PlayerRepository playerRepository;
+    private final TeamRepository teamRepository;
 
-    public PlayerServiceImpl(PlayerRepository playerRepository) {
+    public PlayerServiceImpl(PlayerRepository playerRepository, TeamRepository teamRepository) {
         this.playerRepository = playerRepository;
+        this.teamRepository = teamRepository;
     }
 
     @Override
@@ -39,7 +43,16 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Override
     public CreatePlayerResponse createPlayer(CreatePlayerRequest request) {
+        Team currentTeam = teamRepository.findById(request.getCurrentTeamId())
+                .orElseThrow(() -> new RuntimeException("Team not found"));
+
         Player player = PlayerMapping.INSTANCE.createPlayer(request);
+        player.setCurrentTeam(currentTeam);
+
+        double newSquadValue = currentTeam.getSquadValue() + request.getMarketValue();
+        currentTeam.setSquadValue(newSquadValue);
+
+        teamRepository.save(currentTeam);
         Player savedPlayer = playerRepository.save(player);
         return new CreatePlayerResponse(savedPlayer.getId(),
                 savedPlayer.getFirstName(),

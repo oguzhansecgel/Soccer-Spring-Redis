@@ -2,10 +2,8 @@ package com.soccer_stats.soccer.controller;
 
 import com.soccer_stats.soccer.dto.request.team.CreateTeamRequest;
 import com.soccer_stats.soccer.dto.request.team.UpdateTeamRequest;
-import com.soccer_stats.soccer.dto.response.team.CreateTeamResponse;
-import com.soccer_stats.soccer.dto.response.team.GetAllTeamResponse;
-import com.soccer_stats.soccer.dto.response.team.GetByIdTeamResponse;
-import com.soccer_stats.soccer.dto.response.team.UpdateTeamResponse;
+import com.soccer_stats.soccer.dto.response.team.*;
+import com.soccer_stats.soccer.model.Team;
 import com.soccer_stats.soccer.service.TeamService;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +28,10 @@ public class TeamController {
     public List<GetAllTeamResponse> getAllTeam()
     {
         return teamService.getAllTeamResponse();
+    }
+    @GetMapping("/by-league/{leagueId}")
+    public List<GetAllTeamWithLeague> getTeamsByLeagueId(@PathVariable int leagueId) {
+        return teamService.getTeamsByLeagueId(leagueId);
     }
     @PostMapping("/create/team")
     public CreateTeamResponse createTeam(@RequestBody CreateTeamRequest createTeamRequest)

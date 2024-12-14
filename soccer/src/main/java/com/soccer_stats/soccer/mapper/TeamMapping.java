@@ -3,6 +3,7 @@ package com.soccer_stats.soccer.mapper;
 import com.soccer_stats.soccer.dto.request.team.CreateTeamRequest;
 import com.soccer_stats.soccer.dto.request.team.UpdateTeamRequest;
 import com.soccer_stats.soccer.dto.response.team.GetAllTeamResponse;
+import com.soccer_stats.soccer.dto.response.team.GetAllTeamWithLeague;
 import com.soccer_stats.soccer.dto.response.team.GetByIdTeamResponse;
 import com.soccer_stats.soccer.model.Team;
 import org.mapstruct.Mapper;
@@ -29,4 +30,8 @@ public interface TeamMapping {
     @Mapping(source = "league.leagueName",target = "leagueName")
     GetAllTeamResponse getAllTeam(Team team);
     List<GetAllTeamResponse> getAllTeamToList(List<Team> teams);
+
+    @Mapping(source = "league.leagueName",target = "leagueName")
+    GetAllTeamWithLeague getAllTeamWithLeague(Team team);
+    List<GetAllTeamWithLeague> getAllTeamWithLeagueToList(List<Team> teams);
 }

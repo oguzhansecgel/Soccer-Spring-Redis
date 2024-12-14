@@ -15,4 +15,5 @@ public interface LeagueService {
     List<GetAllLeagueResponse> getAllLeague();
     CreateLeagueResponse createLeague(CreateLeagueRequest request);
     UpdateLeagueResponse updateLeague(UpdateLeagueRequest request, int id);
+    void deleteLeague(int id);
 }

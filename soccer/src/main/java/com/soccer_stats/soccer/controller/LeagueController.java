@@ -41,4 +41,9 @@ public class LeagueController {
     {
         return leagueService.updateLeague(request,id);
     }
+    @DeleteMapping("/delete/league/{id}")
+    public void deleteLeague(@PathVariable int id)
+    {
+        leagueService.deleteLeague(id);
+    }
 }

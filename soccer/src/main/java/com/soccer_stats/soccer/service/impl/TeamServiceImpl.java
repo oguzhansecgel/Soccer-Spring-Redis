@@ -2,10 +2,7 @@ package com.soccer_stats.soccer.service.impl;
 
 import com.soccer_stats.soccer.dto.request.team.CreateTeamRequest;
 import com.soccer_stats.soccer.dto.request.team.UpdateTeamRequest;
-import com.soccer_stats.soccer.dto.response.team.CreateTeamResponse;
-import com.soccer_stats.soccer.dto.response.team.GetAllTeamResponse;
-import com.soccer_stats.soccer.dto.response.team.GetByIdTeamResponse;
-import com.soccer_stats.soccer.dto.response.team.UpdateTeamResponse;
+import com.soccer_stats.soccer.dto.response.team.*;
 import com.soccer_stats.soccer.mapper.TeamMapping;
 import com.soccer_stats.soccer.model.Team;
 import com.soccer_stats.soccer.repository.TeamRepository;
@@ -49,5 +46,11 @@ public class TeamServiceImpl implements TeamService {
         Team team1 = TeamMapping.INSTANCE.updateTeam(updateTeamRequest, team);
         Team savedTeam = teamRepository.save(team1);
         return new UpdateTeamResponse(savedTeam.getId(),savedTeam.getName(),savedTeam.getSince(),savedTeam.getLeague().getId());
+    }
+
+    @Override
+    public List<GetAllTeamWithLeague> getTeamsByLeagueId(int leagueId) {
+       List<Team> team = teamRepository.findByLeague_Id(leagueId);
+        return TeamMapping.INSTANCE.getAllTeamWithLeagueToList(team);
     }
 }

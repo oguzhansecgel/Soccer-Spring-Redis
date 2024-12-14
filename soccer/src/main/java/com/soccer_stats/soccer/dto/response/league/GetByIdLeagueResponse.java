@@ -5,13 +5,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetByIdLeagueResponse {
+public class GetByIdLeagueResponse implements Serializable {
     private int id;
     private String leagueName;
     private int startDate;

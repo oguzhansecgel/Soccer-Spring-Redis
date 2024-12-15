@@ -2,13 +2,16 @@ package com.soccer_stats.soccer.service.impl;
 
 import com.soccer_stats.soccer.dto.request.playerStats.CreatePlayerStatsRequest;
 import com.soccer_stats.soccer.dto.response.playerStats.CreatePlayerStatsResponse;
+import com.soccer_stats.soccer.dto.response.playerStats.PlayerStatsResponseWithPlayer;
 import com.soccer_stats.soccer.mapper.PlayerStatsMapping;
+import com.soccer_stats.soccer.model.Player;
 import com.soccer_stats.soccer.model.PlayerStats;
 import com.soccer_stats.soccer.repository.PlayerStatsRepository;
 import com.soccer_stats.soccer.service.PlayerStatsService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -80,5 +83,11 @@ public class PlayerStatsServiceImpl implements PlayerStatsService {
         playerStats.setRedCards(playerStats.getRedCards() + redCart);
 
         playerStatsRepository.save(playerStats);
+    }
+
+    @Override
+    public List<PlayerStatsResponseWithPlayer> playerStatsWithPlayer(int playerId) {
+        List<PlayerStats> playerStats = playerStatsRepository.findByPlayerId(playerId);
+        return PlayerStatsMapping.INSTANCE.playerStatsWithPlayerToList(playerStats);
     }
 }

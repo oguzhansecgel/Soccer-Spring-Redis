@@ -2,9 +2,12 @@ package com.soccer_stats.soccer.controller;
 
 import com.soccer_stats.soccer.dto.request.playerStats.CreatePlayerStatsRequest;
 import com.soccer_stats.soccer.dto.response.playerStats.CreatePlayerStatsResponse;
+import com.soccer_stats.soccer.dto.response.playerStats.PlayerStatsResponseWithPlayer;
 import com.soccer_stats.soccer.service.PlayerStatsService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/playerStats")
@@ -16,6 +19,11 @@ public class PlayerStatsController {
         this.playerStatsService = playerStatsService;
     }
 
+    @GetMapping("/getAll/playerStats/{playerId}")
+    public List<PlayerStatsResponseWithPlayer> playerStats(@PathVariable int playerId)
+    {
+        return playerStatsService.playerStatsWithPlayer(playerId);
+    }
     @PostMapping("/create/playerStats")
     public CreatePlayerStatsResponse createPlayerStats(@RequestBody CreatePlayerStatsRequest request)
     {

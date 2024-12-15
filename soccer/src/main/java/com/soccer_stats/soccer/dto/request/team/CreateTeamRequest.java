@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -15,5 +17,7 @@ import lombok.Setter;
 public class CreateTeamRequest {
     private String name;
     private int since;
+    private LocalDate seasonStart;
+    private LocalDate seasonEnd;
     private int leagueId;
 }

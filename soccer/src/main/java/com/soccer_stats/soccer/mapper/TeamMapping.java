@@ -19,9 +19,11 @@ public interface TeamMapping {
     TeamMapping INSTANCE = Mappers.getMapper(TeamMapping.class);
 
     @Mapping(source = "leagueId",target = "league.id")
+    @Mapping(source = "seasonStart",target = "seasonStart")
     Team createTeam(CreateTeamRequest request);
 
     @Mapping(source = "leagueId",target = "league.id")
+    @Mapping(source = "seasonStart",target = "seasonStart")
     Team updateTeam(UpdateTeamRequest request, @MappingTarget Team team);
 
     @Mapping(source = "league.leagueName",target = "leagueName")

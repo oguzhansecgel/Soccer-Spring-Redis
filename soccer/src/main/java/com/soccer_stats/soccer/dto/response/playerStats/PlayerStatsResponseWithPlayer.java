@@ -23,4 +23,5 @@ public class PlayerStatsResponseWithPlayer {
     private Date startDate;
 
     private Date endDate;
+    private int playerId;
 }

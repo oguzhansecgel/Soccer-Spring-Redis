@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -12,6 +14,8 @@ public class GetAllTeamResponse {
     private int id;
     private String name;
     private int since;
+    private LocalDate seasonStart;
+    private LocalDate seasonEnd;
     private double squadValue;
     private String leagueName;
 }

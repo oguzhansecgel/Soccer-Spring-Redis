@@ -37,7 +37,7 @@ public class TeamServiceImpl implements TeamService {
     public CreateTeamResponse createTeam(CreateTeamRequest createTeamRequest) {
         Team team = TeamMapping.INSTANCE.createTeam(createTeamRequest);
         Team savedTeam = teamRepository.save(team);
-        return new CreateTeamResponse(savedTeam.getId(),savedTeam.getName(),savedTeam.getSince(),savedTeam.getLeague().getId());
+        return new CreateTeamResponse(savedTeam.getId(),savedTeam.getName(),savedTeam.getSince(),savedTeam.getSeasonStart(),savedTeam.getSeasonEnd(),savedTeam.getLeague().getId());
     }
 
     @Override
@@ -45,7 +45,7 @@ public class TeamServiceImpl implements TeamService {
         Team team = teamRepository.findById(id).get();
         Team team1 = TeamMapping.INSTANCE.updateTeam(updateTeamRequest, team);
         Team savedTeam = teamRepository.save(team1);
-        return new UpdateTeamResponse(savedTeam.getId(),savedTeam.getName(),savedTeam.getSince(),savedTeam.getLeague().getId());
+        return new UpdateTeamResponse(savedTeam.getId(),savedTeam.getName(),savedTeam.getSeasonStart(),savedTeam.getSeasonEnd(),savedTeam.getSince(),savedTeam.getLeague().getId());
     }
 
     @Override

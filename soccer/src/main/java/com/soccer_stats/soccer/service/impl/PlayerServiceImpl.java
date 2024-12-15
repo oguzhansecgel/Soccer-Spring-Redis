@@ -2,10 +2,7 @@ package com.soccer_stats.soccer.service.impl;
 
 import com.soccer_stats.soccer.dto.request.player.CreatePlayerRequest;
 import com.soccer_stats.soccer.dto.request.player.UpdatePlayerRequest;
-import com.soccer_stats.soccer.dto.response.player.CreatePlayerResponse;
-import com.soccer_stats.soccer.dto.response.player.GetAllPlayerResponse;
-import com.soccer_stats.soccer.dto.response.player.GetByIdPlayerResponse;
-import com.soccer_stats.soccer.dto.response.player.UpdatePlayerResponse;
+import com.soccer_stats.soccer.dto.response.player.*;
 import com.soccer_stats.soccer.mapper.PlayerMapping;
 import com.soccer_stats.soccer.model.Player;
 import com.soccer_stats.soccer.model.Team;
@@ -86,4 +83,39 @@ public class PlayerServiceImpl implements PlayerService {
                 savedPlayer.getCurrentTeam().getId()
         );
     }
+
+    @Override
+    public List<GetAllPlayerWithTeam> getAllPlayersWithTeam(int teamId) {
+        List<Player> players = playerRepository.findByCurrentTeamId(teamId);
+        return PlayerMapping.INSTANCE.getAllPlayerWithTeamToList(players);
+    }
+
+    @Override
+    public void transferPlayer(int playerId, int fromTeamId, int toTeamId) {
+        Optional<Player> playerOptional = playerRepository.findById(playerId);
+        Optional<Team> fromTeamOptional = teamRepository.findById(fromTeamId);
+        Optional<Team> toTeamOptional = teamRepository.findById(toTeamId);
+
+
+
+        Player player = playerOptional.get();
+        Team fromTeam = fromTeamOptional.get();
+        Team toTeam = toTeamOptional.get();
+
+        double currentSquadValue = fromTeam.getSquadValue();
+        double playerMarketValue = player.getMarketValue();
+        double newSquadValueFromTeam = currentSquadValue - playerMarketValue;
+        fromTeam.setSquadValue(newSquadValueFromTeam);
+
+        double currentSquadValueToTeam = toTeam.getSquadValue();
+        double newSquadValueToTeam = currentSquadValueToTeam + playerMarketValue;
+        toTeam.setSquadValue(newSquadValueToTeam);
+
+        player.setCurrentTeam(toTeam);
+
+        teamRepository.save(fromTeam);
+        teamRepository.save(toTeam);
+        playerRepository.save(player);
+    }
+
 }

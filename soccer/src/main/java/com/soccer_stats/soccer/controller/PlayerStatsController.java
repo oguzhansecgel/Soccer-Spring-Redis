@@ -48,6 +48,7 @@ public class PlayerStatsController {
         playerStatsService.yellowCartStats(playerId, yellowCart);
         return ResponseEntity.ok("Player's yellowCart updated successfully.");
     }
+
     @PutMapping("/{playerId}/redCart")
     public ResponseEntity<String> updateRedCart(@PathVariable int playerId, @RequestParam int redCart)
     {

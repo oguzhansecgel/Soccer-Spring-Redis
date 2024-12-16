@@ -9,6 +9,10 @@ import com.soccer_stats.soccer.model.Team;
 import com.soccer_stats.soccer.repository.PlayerRepository;
 import com.soccer_stats.soccer.repository.TeamRepository;
 import com.soccer_stats.soccer.service.PlayerService;
+import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.core.DirectExchange;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,10 +24,21 @@ public class PlayerServiceImpl implements PlayerService {
 
     private final PlayerRepository playerRepository;
     private final TeamRepository teamRepository;
+    private final DirectExchange exchange;
 
-    public PlayerServiceImpl(PlayerRepository playerRepository, TeamRepository teamRepository) {
+    private final AmqpTemplate rabbitTemplate;
+
+    @Value("${sample.rabbitmq.routingKey}")
+    String routingKey;
+
+    @Value("${sample.rabbitmq.queue}")
+    String queueName;
+
+    public PlayerServiceImpl(PlayerRepository playerRepository, TeamRepository teamRepository, DirectExchange exchange, AmqpTemplate rabbitTemplate) {
         this.playerRepository = playerRepository;
         this.teamRepository = teamRepository;
+        this.exchange = exchange;
+        this.rabbitTemplate = rabbitTemplate;
     }
 
     @Override
@@ -51,6 +66,11 @@ public class PlayerServiceImpl implements PlayerService {
 
         teamRepository.save(currentTeam);
         Player savedPlayer = playerRepository.save(player);
+
+
+        rabbitTemplate.convertAndSend(exchange.getName(), routingKey, request);
+
+
         return new CreatePlayerResponse(savedPlayer.getId(),
                 savedPlayer.getFirstName(),
                 savedPlayer.getLastName(),
@@ -62,6 +82,7 @@ public class PlayerServiceImpl implements PlayerService {
                 savedPlayer.getContractEndDate(),
                 savedPlayer.getPositions(),
                 savedPlayer.getCurrentTeam().getId());
+
     }
 
     @Override

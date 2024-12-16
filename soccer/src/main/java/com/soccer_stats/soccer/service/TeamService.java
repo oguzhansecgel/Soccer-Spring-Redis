@@ -14,4 +14,5 @@ public interface TeamService {
     CreateTeamResponse createTeam(CreateTeamRequest createTeamRequest);
     UpdateTeamResponse updateTeam(UpdateTeamRequest updateTeamRequest,int id);
     List<GetAllTeamWithLeague> getTeamsByLeagueId(int leagueId);
+    void deleteTeam(int id);
 }

@@ -33,6 +33,11 @@ public class TeamController {
     public List<GetAllTeamWithLeague> getTeamsByLeagueId(@PathVariable int leagueId) {
         return teamService.getTeamsByLeagueId(leagueId);
     }
+    @DeleteMapping("/delete/team/{teamId}")
+    public void deleteTeam(@PathVariable int teamId)
+    {
+        teamService.deleteTeam(teamId);
+    }
     @PostMapping("/create/team")
     public CreateTeamResponse createTeam(@RequestBody CreateTeamRequest createTeamRequest)
     {

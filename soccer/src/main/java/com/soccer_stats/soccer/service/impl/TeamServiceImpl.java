@@ -53,4 +53,9 @@ public class TeamServiceImpl implements TeamService {
        List<Team> team = teamRepository.findByLeague_Id(leagueId);
         return TeamMapping.INSTANCE.getAllTeamWithLeagueToList(team);
     }
+
+    @Override
+    public void deleteTeam(int id) {
+        teamRepository.deleteById(id);
+    }
 }

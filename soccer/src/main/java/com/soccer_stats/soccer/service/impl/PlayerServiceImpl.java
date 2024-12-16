@@ -31,6 +31,9 @@ public class PlayerServiceImpl implements PlayerService {
     @Value("${sample.rabbitmq.routingKey}")
     String routingKey;
 
+    @Value("${sample.rabbitmq.secondServiceRoutingKey}")
+    String secondRoutingKey;
+
     @Value("${sample.rabbitmq.queue}")
     String queueName;
 
@@ -69,7 +72,7 @@ public class PlayerServiceImpl implements PlayerService {
 
 
         rabbitTemplate.convertAndSend(exchange.getName(), routingKey, request);
-
+        rabbitTemplate.convertAndSend(exchange.getName(), secondRoutingKey, request);
 
         return new CreatePlayerResponse(savedPlayer.getId(),
                 savedPlayer.getFirstName(),

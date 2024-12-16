@@ -4,12 +4,9 @@ import com.soccer_stats.search_service.document.Player;
 import com.soccer_stats.search_service.repository.PlayerRepository;
 import com.soccer_stats.search_service.service.PlayerService;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class PlayerServiceImpl implements PlayerService {

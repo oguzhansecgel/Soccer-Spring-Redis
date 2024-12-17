@@ -1,5 +1,6 @@
 package com.soccer_stats.soccer.service.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.soccer_stats.soccer.dto.request.player.CreatePlayerRequest;
 import com.soccer_stats.soccer.dto.request.player.UpdatePlayerRequest;
 import com.soccer_stats.soccer.dto.response.player.*;
@@ -9,8 +10,7 @@ import com.soccer_stats.soccer.model.Team;
 import com.soccer_stats.soccer.repository.PlayerRepository;
 import com.soccer_stats.soccer.repository.TeamRepository;
 import com.soccer_stats.soccer.service.PlayerService;
-import org.springframework.amqp.core.AmqpTemplate;
-import org.springframework.amqp.core.DirectExchange;
+import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -26,18 +26,18 @@ public class PlayerServiceImpl implements PlayerService {
     private final TeamRepository teamRepository;
     private final DirectExchange exchange;
 
-    private final AmqpTemplate rabbitTemplate;
+    private final RabbitTemplate rabbitTemplate;
 
     @Value("${sample.rabbitmq.routingKey}")
     String routingKey;
-
-    @Value("${sample.rabbitmq.secondServiceRoutingKey}")
+    @Value("${sample.rabbitmq.secondRoutingKey}")
     String secondRoutingKey;
 
     @Value("${sample.rabbitmq.queue}")
     String queueName;
 
-    public PlayerServiceImpl(PlayerRepository playerRepository, TeamRepository teamRepository, DirectExchange exchange, AmqpTemplate rabbitTemplate) {
+
+    public PlayerServiceImpl(PlayerRepository playerRepository, TeamRepository teamRepository, DirectExchange exchange, RabbitTemplate rabbitTemplate) {
         this.playerRepository = playerRepository;
         this.teamRepository = teamRepository;
         this.exchange = exchange;
@@ -69,8 +69,9 @@ public class PlayerServiceImpl implements PlayerService {
 
         teamRepository.save(currentTeam);
         Player savedPlayer = playerRepository.save(player);
-
-
+        MessageProperties messageProperties = new MessageProperties();
+        messageProperties.setReplyTo("yourReplyQueue");
+        Message message = new Message(request.toString().getBytes(), messageProperties);
         rabbitTemplate.convertAndSend(exchange.getName(), routingKey, request);
         rabbitTemplate.convertAndSend(exchange.getName(), secondRoutingKey, request);
 

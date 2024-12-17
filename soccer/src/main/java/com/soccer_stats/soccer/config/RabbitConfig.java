@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+
 public class RabbitConfig {
 
     @Value("${sample.rabbitmq.exchange}")
@@ -19,14 +20,15 @@ public class RabbitConfig {
     @Value("${sample.rabbitmq.queue}")
     String queueName;
 
+    @Value("${sample.rabbitmq.secondQueue}")
+    String secondQueueName;
+
     @Value("${sample.rabbitmq.routingKey}")
     String routingKey;
 
-    @Value("${sample.rabbitmq.secondServiceQueue}")
-    String secondServiceQueue;
+    @Value("${sample.rabbitmq.secondRoutingKey}")
+    String secondRoutingKey;
 
-    @Value("${sample.rabbitmq.secondServiceRoutingKey}")
-    String secondServiceRoutingKey;
     @Bean
     DirectExchange exchange() {
         return new DirectExchange(exchange);
@@ -37,17 +39,20 @@ public class RabbitConfig {
         return new Queue(queueName, true);
     }
     @Bean
-    Queue secondStepQueue() {
-        return new Queue(secondServiceQueue, true);
+    Queue secondStepQueue(){
+        return new Queue(secondQueueName, true);
     }
+
     @Bean
-    Binding binding(Queue firstStepQueue, DirectExchange exchange){
+    Binding firstBinding(Queue firstStepQueue, DirectExchange exchange){
         return BindingBuilder.bind(firstStepQueue).to(exchange).with(routingKey);
     }
+
     @Bean
-    Binding secondStepBinding(Queue secondStepQueue, DirectExchange exchange) {
-        return BindingBuilder.bind(secondStepQueue).to(exchange).with(secondServiceRoutingKey);
+    Binding secondBinding(Queue secondStepQueue, DirectExchange exchange){
+        return BindingBuilder.bind(secondStepQueue).to(exchange).with(secondRoutingKey);
     }
+
     @Bean
     public MessageConverter jsonMessageConverter(){
         return new Jackson2JsonMessageConverter();
